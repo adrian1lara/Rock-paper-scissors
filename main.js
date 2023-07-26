@@ -5,12 +5,14 @@ console.log("hello");
 function game() {
     let computerScore = 0
     let playerScore = 0
+    let rounds = 0
 
     function getComputerChoice() {
         const choices = ['rock', 'paper', 'scissors'];
         const randomNumber = Math.floor(Math.random() * 3);
         return choices[randomNumber];
     }
+    
     
     function playRound(playerSelection, computerSelection) {
         if (playerSelection === computerSelection) {
@@ -42,13 +44,32 @@ function game() {
         }
     }
 
-    for (let i = 0; i < 5; i++) {
-        const playerSelection = prompt("Pick rock, paper, or scissors").toLowerCase();
-        const computerSelection = getComputerChoice();
-        console.log(playRound(playerSelection, computerSelection));
+    function updateScoreboard(resultText) {
+        const resultDiv =  document.getElementById('result');
+        const finalScoreDiv = document.getElementById('final-score');
+        resultDiv.textContent = resultText;
+        finalScoreDiv.textContent = playerScore + " - " + computerScore;
     }
 
-    console.log("Final score: " + playerScore + " - " + computerScore);
+    function onButtonClick(event) {
+        if(rounds === 5) {
+            updateScoreboard("Game over!");
+            return;
+        }
+
+        rounds++;
+        const playerSelection = event.target.id
+        const computerSelection = getComputerChoice();
+        const resultText = playRound(playerSelection, computerSelection);
+        updateScoreboard(resultText);
+    }
+
+
+    // adding event listeners to each button
+    document.getElementById('rock').addEventListener('click', onButtonClick)
+    document.getElementById('paper').addEventListener('click', onButtonClick)
+    document.getElementById('scissors').addEventListener('click', onButtonClick)
+
 }
 
 
